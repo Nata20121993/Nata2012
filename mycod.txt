@@ -1,0 +1,36 @@
+#include "My_Class.h"
+char* ErrorLimits = "ПРЕВЫШЕН допустимый диапазон\n";
+char* Explanation = "Значение должно быть от ";
+char* To =" до ";
+using namespace std;
+template <class T>
+int input (T& k, const char INVITE)
+ {  // Открытие своего входного потока с консоли
+    ifstream my_inp ("CON");
+    long double t;
+    cout << "Введите значение переменной " << INVITE
+         << " типа " << typeid(k).name() << " ===> ";
+    if (typeid(T)==typeid (float))
+        my_inp >> t;
+    else 
+        my_inp >> k;  // ввод целочисленных переменных и типа double       
+
+    switch (my_inp.rdstate())   // Анализ введенной информации
+    { case ios::goodbit:    // с символами все в порядке!
+      case ios::eofbit :
+
+        // контроль допустимых диапазонов
+        // ----- ВЕЩЕСТВЕННЫЕ числа
+        if (typeid(T)==typeid (float))
+          if(CheckFlt(t)) return 1;
+        if (typeid(T)==typeid (float)) k=(T)t;
+        return 0;    // Все в порядке!
+      case ios::failbit:             // Есть ошибки ввода символов
+      case ios::badbit :
+        cout << "\nОшибка ввода символов!!!";
+        cout << "\nПопробуем еще разок ....." << endl;
+        return 1;
+      };
+    cout << "\n Что-то еще случилось нехорошее на вводе..." << endl;
+    return 1;
+ }
